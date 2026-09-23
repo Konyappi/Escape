@@ -125,14 +125,6 @@ export async function scanDocument(document) {
     }
 
     if (!response.ok) {
-      const errorBody = await response.text();
-
-      console.error('OCR proxy error:', {
-        status: response.status,
-        statusText: response.statusText,
-        body: errorBody,
-      });
-
       throw createError('OCR_FAILED');
     }
 
@@ -140,8 +132,6 @@ export async function scanDocument(document) {
     // RESPONSE
     // =========================
     const payload = await response.json();
-
-    console.log('OCR response:', payload);
 
     const text = extractTextFromPayload(payload);
 
@@ -163,8 +153,6 @@ export async function scanDocument(document) {
     if (error instanceof TypeError) {
       throw createError('NETWORK_ERROR');
     }
-
-    console.error('Unexpected OCR error:', error);
 
     throw createError('UNKNOWN_ERROR');
   }
